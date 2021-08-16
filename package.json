@@ -1,0 +1,25 @@
+{
+    "name": "weld-syntax",
+    "displayName": "weld-syntax",
+    "description": "Syntax Highlighting for WeldIR",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.59.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "weld",
+            "aliases": ["Weld IR", "weld"],
+            "extensions": [".weld"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "weld",
+            "scopeName": "source.weld",
+            "path": "./syntaxes/weld.tmLanguage.json"
+        }]
+    }
+}
