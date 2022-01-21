@@ -10,16 +10,42 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "weld",
-            "aliases": ["Weld IR", "weld"],
-            "extensions": [".weld"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "weld",
-            "scopeName": "source.weld",
-            "path": "./syntaxes/weld.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "weld",
+                "aliases": [
+                    "Weld IR",
+                    "weld"
+                ],
+                "extensions": [
+                    ".weld"
+                ],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "weld_sir",
+                "aliases": [
+                    "Weld SIR",
+                    "SIR",
+                    "sir"
+                ],
+                "extensions": [
+                    ".sir"
+                ],
+                "configuration": "./sir-language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "weld",
+                "scopeName": "source.weld",
+                "path": "./syntaxes/weld.tmLanguage.json"
+            },
+            {
+                "language": "weld_sir",
+                "scopeName": "source.weld_sir",
+                "path": "./syntaxes/sir.tmLanguage.json"
+            }
+        ]
     }
 }
