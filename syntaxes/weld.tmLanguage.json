@@ -1,198 +1,220 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Weld IR",
-	"patterns": [
-		{
-			"include": "#bindings"
-		},
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#literals"
-		},
-		{
-			"include": "#operators"
-		},
-		{
-			"include": "#types"
-		}
-	],
-	"repository": {
-		"bindings": {
-			"patterns": [
-				{
-					"comment": "variable declaration",
-					"match": "\\b(let)[[:space:]]+([[:word:]]+)",
-					"captures": {
-						"1": {
-							"name": "keyword.weld"
-						},
-						"2": {
-							"name": "variable.other.weld"
-						}
-					}
-				}
-			]
-		},
-		"brackets": {
-			"patterns": [
-				{
-					"begin": "[",
-					"end": "]",
-					"patterns": [
-						{
-							"include": "#brackets"
-						}
-					]
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"begin": "#",
-					"end": "\n",
-					"name": "comment.line"
-				}
-			]
-		},
-		"keywords": {
-			"patterns": [
-				{
-					"comment": "keyword",
-					"name": "keyword.control.weld",
-					"match": "\\b(for|if|select|iterate|result|merge)\\b"
-				},
-				{
-					"name": "keyword.weld",
-					"match": "\\b(macro)\\b"
-				},
-				{
-					"name": "support.function",
-					"match": "\\b(appender|merger|dictmerger|groupmerger|vecmerger)"
-				}
-			]
-		},
-		"literals": {
-			"patterns": [
-				{
-					"comment": "boolean literal",
-					"name": "constant.language.boolean.weld",
-					"match": "\\b(true|false)\\b"
-				},
-				{
-					"comment": "floating point decimal literal with exponent",
-					"name": "constant.numeric.decimal.float.weld",
-					"match": "\\b([[:digit:]][[:digit:]_]*(\\.[[:digit:]_]*)?[eE][+-]?[[:digit:]][[:digit:]_]*[g-zG-Z]?)\\b"
-				},
-				{
-					"comment": "floating point decimal literal",
-					"name": "constant.numeric.decimal.float.weld",
-					"match": "\\b([[:digit:]][[:digit:]_]*)(\\.[[:digit:]_]*[g-zG-Z]?\\b|\\.)"
-				},
-				{
-					"comment": "floating point hexadecimal literal with exponent part",
-					"name": "constant.numeric.hexadecimal.float.weld",
-					"match": "\\b((0x|0X)[[:xdigit:]][[:xdigit:]_]*(\\.[[:xdigit:]_]*)?[pP][+-]?[[:digit:]][[:digit:]_]*[g-zG-Z]?)\\b"
-				},
-				{
-					"comment": "floating point hexadecimal literal",
-					"name": "constant.numeric.hexadecimal.float.weld",
-					"match": "\\b((0x|0X)[[:xdigit:]][[:xdigit:]_]*)(\\.[[:xdigit:]_]*[g-zG-Z]?\\b|\\.)"
-				},
-				{
-					"comment": "decimal integer literal",
-					"name": "constant.numeric.decimal.integer.weld",
-					"match": "\\b([[:digit:]][[:digit:]_]*[cClLng-zG-Z]?|(si))\\b"
-				}
-			]
-		},
-		"operators": {
-			"patterns": [
-				{
-					"comment": "binding operator",
-					"name": "keyword.weld",
-					"match": "\\b(let|and)[$&*+\\-/=>@^|<][!?$&*+\\-/=>@^|%:]*"
-				},
-				{
-					"comment": "infix symbol",
-					"name": "keyword.operator.weld",
-					"match": "[$&*+\\-/=>@^%<][~!?$&*+\\-/=>@^|%<:.]*"
-				},
-				{
-					"comment": "infix symbol",
-					"name": "keyword.operator.weld",
-					"match": "#[~!?$&*+\\-/=>@^|%<:.]+"
-				},
-				{
-					"comment": "prefix symbol",
-					"name": "keyword.operator.weld",
-					"match": "![~!?$&*+\\-/=>@^|%<:.]*"
-				},
-				{
-					"comment": "prefix symbol",
-					"name": "keyword.operator.weld",
-					"match": "[?~][~!?$&*+\\-/=>@^|%<:.]+"
-				},
-				{
-					"comment": "named operator",
-					"name": "keyword.operator.weld",
-					"match": "\\b(exp|log|sqrt|sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|erf)\\b"
-				},
-				{
-					"comment": "type annotation",
-					"name": "keyword.other.weld punctuation.other.colon punctuation.colon",
-					"match": ":"
-				},
-				{
-					"comment": "field accessor",
-					"name": "keyword.other.weld punctuation.other.period punctuation.separator.period",
-					"match": "\\.$"
-				},
-				{
-					"comment": "semicolon separator",
-					"name": "keyword.other.weld punctuation.separator.terminator punctuation.separator.semicolon",
-					"match": ";"
-				},
-				{
-					"comment": "comma separator",
-					"name": "keyword.other.weld punctuation.comma punctuation.separator.comma",
-					"match": ","
-				}
-			]
-		},
-		"strings": {
-			"name": "string.quoted.double.weld",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.weld",
-					"match": "\\\\."
-				}
-			]
-		},
-		"types": {
-			"patterns": [
-				{
-					"comment": "builtin type",
-					"name": "support.type.weld",
-					"match": "\\b(bool|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64)\\b"
-				},
-				{
-					"comment": "builtin compound type",
-					"name": "support.class.weld",
-					"match": "\\b(simd|vec|dict)\\b"
-				}
-			]
-		}
-	},
-	"scopeName": "source.weld"
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Weld IR",
+    "patterns":
+    [
+        {
+            "include": "#bindings"
+        },
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#literals"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#types"
+        }
+    ],
+    "repository":
+    {
+        "bindings":
+        {
+            "patterns":
+            [
+                {
+                    "captures":
+                    {
+                        "1":
+                        {
+                            "name": "keyword.weld"
+                        },
+                        "2":
+                        {
+                            "name": "variable.other.weld"
+                        }
+                    },
+                    "comment": "variable declaration",
+                    "match": "\\b(let)[[:space:]]+([[:word:]]+)"
+                }
+            ]
+        },
+        "brackets":
+        {
+            "patterns":
+            [
+                {
+                    "begin": "[",
+                    "end": "]",
+                    "patterns":
+                    [
+                        {
+                            "include": "#brackets"
+                        }
+                    ]
+                }
+            ]
+        },
+        "comments":
+        {
+            "patterns":
+            [
+                {
+                    "begin": "#",
+                    "end": "\n",
+                    "name": "comment.line"
+                }
+            ]
+        },
+        "keywords":
+        {
+            "patterns":
+            [
+                {
+                    "comment": "keyword",
+                    "match": "\\b(for|if|select|iterate|result|merge)\\b",
+                    "name": "keyword.control.weld"
+                },
+                {
+                    "match": "\\b(macro)\\b",
+                    "name": "keyword.weld"
+                },
+                {
+                    "match": "\\b(appender|merger|dictmerger|groupmerger|vecmerger)",
+                    "name": "support.function"
+                }
+            ]
+        },
+        "literals":
+        {
+            "patterns":
+            [
+                {
+                    "comment": "boolean literal",
+                    "match": "\\b(true|false)\\b",
+                    "name": "constant.language.boolean.weld"
+                },
+                {
+                    "comment": "floating point decimal literal with exponent",
+                    "match": "\\b([[:digit:]][[:digit:]_]*(\\.[[:digit:]_]*)?[eE][+-]?[[:digit:]][[:digit:]_]*[g-zG-Z]?)\\b",
+                    "name": "constant.numeric.decimal.float.weld"
+                },
+                {
+                    "comment": "floating point decimal literal",
+                    "match": "\\b([[:digit:]][[:digit:]_]*)(\\.[[:digit:]_]*[g-zG-Z]?\\b|\\.)",
+                    "name": "constant.numeric.decimal.float.weld"
+                },
+                {
+                    "comment": "floating point hexadecimal literal with exponent part",
+                    "match": "\\b((0x|0X)[[:xdigit:]][[:xdigit:]_]*(\\.[[:xdigit:]_]*)?[pP][+-]?[[:digit:]][[:digit:]_]*[g-zG-Z]?)\\b",
+                    "name": "constant.numeric.hexadecimal.float.weld"
+                },
+                {
+                    "comment": "floating point hexadecimal literal",
+                    "match": "\\b((0x|0X)[[:xdigit:]][[:xdigit:]_]*)(\\.[[:xdigit:]_]*[g-zG-Z]?\\b|\\.)",
+                    "name": "constant.numeric.hexadecimal.float.weld"
+                },
+                {
+                    "comment": "decimal integer literal",
+                    "match": "\\b([[:digit:]][[:digit:]_]*[cClLng-zG-Z]?|(si))\\b",
+                    "name": "constant.numeric.decimal.integer.weld"
+                }
+            ]
+        },
+        "operators":
+        {
+            "patterns":
+            [
+                {
+                    "comment": "binding operator",
+                    "match": "\\b(let|and)[$&*+\\-/=>@^|<][!?$&*+\\-/=>@^|%:]*",
+                    "name": "keyword.weld"
+                },
+                {
+                    "comment": "infix symbol",
+                    "match": "[$&*+\\-/=>@^%<][~!?$&*+\\-/=>@^|%<:.]*",
+                    "name": "keyword.operator.weld"
+                },
+                {
+                    "comment": "infix symbol",
+                    "match": "#[~!?$&*+\\-/=>@^|%<:.]+",
+                    "name": "keyword.operator.weld"
+                },
+                {
+                    "comment": "prefix symbol",
+                    "match": "![~!?$&*+\\-/=>@^|%<:.]*",
+                    "name": "keyword.operator.weld"
+                },
+                {
+                    "comment": "prefix symbol",
+                    "match": "[?~][~!?$&*+\\-/=>@^|%<:.]+",
+                    "name": "keyword.operator.weld"
+                },
+                {
+                    "comment": "named operator",
+                    "match": "\\b(exp|log|sqrt|sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|erf)\\b",
+                    "name": "keyword.operator.weld"
+                },
+                {
+                    "comment": "type annotation",
+                    "match": ":",
+                    "name": "keyword.other.weld punctuation.other.colon punctuation.colon"
+                },
+                {
+                    "comment": "field accessor",
+                    "match": "\\.$",
+                    "name": "keyword.other.weld punctuation.other.period punctuation.separator.period"
+                },
+                {
+                    "comment": "semicolon separator",
+                    "match": ";",
+                    "name": "keyword.other.weld punctuation.separator.terminator punctuation.separator.semicolon"
+                },
+                {
+                    "comment": "comma separator",
+                    "match": ",",
+                    "name": "keyword.other.weld punctuation.comma punctuation.separator.comma"
+                }
+            ]
+        },
+        "strings":
+        {
+            "begin": "\"",
+            "end": "\"",
+            "name": "string.quoted.double.weld",
+            "patterns":
+            [
+                {
+                    "match": "\\\\.",
+                    "name": "constant.character.escape.weld"
+                }
+            ]
+        },
+        "types":
+        {
+            "patterns":
+            [
+                {
+                    "comment": "builtin type",
+                    "match": "\\b(bool|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64)\\b",
+                    "name": "support.type.weld"
+                },
+                {
+                    "comment": "builtin compound type",
+                    "match": "\\b(simd|vec|dict)\\b",
+                    "name": "support.class.weld"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.weld"
 }
