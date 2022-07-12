@@ -32,7 +32,8 @@
             "patterns":
             [
                 {
-                    "captures":
+                    "begin": "\\b(let)\\s*(\\{)?",
+                    "beginCaptures":
                     {
                         "1":
                         {
@@ -40,27 +41,63 @@
                         },
                         "2":
                         {
-                            "name": "variable.other.weld"
+                            "name": "punctuation.section.brackets"
                         }
                     },
                     "comment": "variable declaration",
-                    "match": "\\b(let)[[:space:]]+([[:word:]]+)"
-                }
-            ]
-        },
-        "brackets":
-        {
-            "patterns":
-            [
-                {
-                    "begin": "[",
-                    "end": "]",
+                    "end": "((\\})?\\s*(=)|;)",
+                    "endCaptures":
+                    {
+                        "2":
+                        {
+                            "name": "punctuation.section.brackets"
+                        },
+                        "3":
+                        {
+                            "name": "keyword.operator.assignment.weld"
+                        },
+                        "4":
+                        {
+                            "name": "punctuation.terminator.weld"
+                        }
+                    },
                     "patterns":
                     [
                         {
-                            "include": "#brackets"
+                            "captures":
+                            {
+                                "1":
+                                {
+                                    "name": "variable.other.weld"
+                                },
+                                "2":
+                                {
+                                    "name": "punctuation.separator.sequence"
+                                }
+                            },
+                            "match": "\\b([_a-zA-Z][_0-9a-zA-Z]*)\\s*(,)?"
+                        },
+                        {
+                            "begin": ":",
+                            "beginCaptures":
+                            {
+                                "1":
+                                {
+                                    "name": "punctuation.accessor.colon.weld"
+                                }
+                            },
+                            "end": "(?==)",
+                            "patterns":
+                            [
+                                {
+                                    "include": "#types"
+                                }
+                            ]
                         }
                     ]
+                },
+                {
+                    "include": "#cudf"
                 }
             ]
         },
@@ -70,10 +107,41 @@
             [
                 {
                     "begin": "#",
-                    "end": "\n",
+                    "end": "\\n",
                     "name": "comment.line"
                 }
             ]
+        },
+        "cudf":
+        {
+            "captures":
+            {
+                "1":
+                {
+                    "name": "keyword.weld"
+                },
+                "2":
+                {
+                    "name": "punctuation.definition.generic.begin"
+                },
+                "3":
+                {
+                    "name": "variable.function.weld"
+                },
+                "4":
+                {
+                    "name": "punctuation.separator.key-value"
+                },
+                "5":
+                {
+                    "name": "support.type.weld"
+                },
+                "6":
+                {
+                    "name": "punctuation.definition.generic.end"
+                }
+            },
+            "match": "\\b(cudf)\\s*(\\[)(\\w+)(,)\\s*(.*)(\\])\\((.*)\\)"
         },
         "keywords":
         {
@@ -85,7 +153,7 @@
                     "name": "keyword.control.weld"
                 },
                 {
-                    "match": "\\b(macro)\\b",
+                    "match": "\\b(macro|zip)\\b",
                     "name": "keyword.weld"
                 },
                 {
@@ -105,27 +173,27 @@
                 },
                 {
                     "comment": "floating point decimal literal with exponent",
-                    "match": "\\b([[:digit:]][[:digit:]_]*(\\.[[:digit:]_]*)?[eE][+-]?[[:digit:]][[:digit:]_]*[g-zG-Z]?)\\b",
+                    "match": "\\b(\\d+(\\.\\d*)?[eE][+-]?\\d+[g-zG-Z]?)\\b",
                     "name": "constant.numeric.decimal.float.weld"
                 },
                 {
                     "comment": "floating point decimal literal",
-                    "match": "\\b([[:digit:]][[:digit:]_]*)(\\.[[:digit:]_]*[g-zG-Z]?\\b|\\.)",
+                    "match": "\\b(\\d+)(\\.\\d*[g-zG-Z]?\\b|\\.)",
                     "name": "constant.numeric.decimal.float.weld"
                 },
                 {
                     "comment": "floating point hexadecimal literal with exponent part",
-                    "match": "\\b((0x|0X)[[:xdigit:]][[:xdigit:]_]*(\\.[[:xdigit:]_]*)?[pP][+-]?[[:digit:]][[:digit:]_]*[g-zG-Z]?)\\b",
+                    "match": "\\b((0x|0X)\\h+(\\.\\h*)?[pP][+-]?\\d+[g-zG-Z]?)\\b",
                     "name": "constant.numeric.hexadecimal.float.weld"
                 },
                 {
                     "comment": "floating point hexadecimal literal",
-                    "match": "\\b((0x|0X)[[:xdigit:]][[:xdigit:]_]*)(\\.[[:xdigit:]_]*[g-zG-Z]?\\b|\\.)",
+                    "match": "\\b((0x|0X)\\h+)(\\.\\h*[g-zG-Z]?\\b|\\.)",
                     "name": "constant.numeric.hexadecimal.float.weld"
                 },
                 {
                     "comment": "decimal integer literal",
-                    "match": "\\b([[:digit:]][[:digit:]_]*[cClLng-zG-Z]?|(si))\\b",
+                    "match": "\\b(\\d+[cClLng-zG-Z]?|(si))\\b",
                     "name": "constant.numeric.decimal.integer.weld"
                 }
             ]
@@ -136,27 +204,27 @@
             [
                 {
                     "comment": "binding operator",
-                    "match": "\\b(let|and)[$&*+\\-/=>@^|<][!?$&*+\\-/=>@^|%:]*",
+                    "match": "\\b(let|and)[$&*+\\-\\/=>@^|<][!?$&*+\\-\\/=>@^|%:]*",
                     "name": "keyword.weld"
                 },
                 {
                     "comment": "infix symbol",
-                    "match": "[$&*+\\-/=>@^%<][~!?$&*+\\-/=>@^|%<:.]*",
+                    "match": "[$&*+\\-\\/=>@^%<][~!?$&*+\\-\\/=>@^|%<:.]*",
                     "name": "keyword.operator.weld"
                 },
                 {
                     "comment": "infix symbol",
-                    "match": "#[~!?$&*+\\-/=>@^|%<:.]+",
+                    "match": "#[~!?$&*+\\-\\/=>@^|%<:.]+",
                     "name": "keyword.operator.weld"
                 },
                 {
                     "comment": "prefix symbol",
-                    "match": "![~!?$&*+\\-/=>@^|%<:.]*",
+                    "match": "![~!?$&*+\\-\\/=>@^|%<:.]*",
                     "name": "keyword.operator.weld"
                 },
                 {
                     "comment": "prefix symbol",
-                    "match": "[?~][~!?$&*+\\-/=>@^|%<:.]+",
+                    "match": "[?~][~!?$&*+\\-\\/=>@^|%<:.]+",
                     "name": "keyword.operator.weld"
                 },
                 {
@@ -205,13 +273,41 @@
             [
                 {
                     "comment": "builtin type",
-                    "match": "\\b(bool|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64)\\b",
+                    "match": "\\b(bool|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64|str)\\b",
                     "name": "support.type.weld"
                 },
                 {
+                    "begin": "\\b(simd|vec|dict)\\s*(\\[)",
+                    "beginCaptures":
+                    {
+                        "1":
+                        {
+                            "name": "support.class.weld"
+                        },
+                        "2":
+                        {
+                            "name": "punctuation.definition.generic.begin"
+                        }
+                    },
                     "comment": "builtin compound type",
-                    "match": "\\b(simd|vec|dict)\\b",
-                    "name": "support.class.weld"
+                    "end": "(\\])",
+                    "endCaptures":
+                    {
+                        "1":
+                        {
+                            "name": "punctuation.definition.generic.end"
+                        }
+                    },
+                    "patterns":
+                    [
+                        {
+                            "include": "#types"
+                        },
+                        {
+                            "match": ",",
+                            "name": "keyword.other.weld punctuation.comma punctuation.separator.comma"
+                        }
+                    ]
                 }
             ]
         }
