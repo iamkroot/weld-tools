@@ -1,0 +1,139 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/syntax.html
+name: WeldIR
+file_extensions:
+  - weld
+scope: source.weld
+contexts:
+  main:
+    - include: bindings
+    - include: comments
+    - include: keywords
+    - include: strings
+    - include: literals
+    - include: operators
+    - include: types
+  bindings:
+    - match: '\b(let)\s*(\{)?'
+      comment: variable declaration
+      captures:
+        1: keyword.weld
+        2: punctuation.section.brackets
+      push:
+        - match: '((\})?\s*(=)|;)'
+          captures:
+            2: punctuation.section.brackets
+            3: keyword.operator.assignment.weld
+            4: punctuation.terminator.weld
+          pop: true
+        - match: '\b([_a-zA-Z][_0-9a-zA-Z]*)\s*(,)?'
+          captures:
+            1: variable.other.weld
+            2: punctuation.separator.sequence
+        - match: ':'
+          captures:
+            1: punctuation.accessor.colon.weld
+          push:
+            - match: (?==)
+              pop: true
+            - include: types
+    - include: cudf
+  comments:
+    - match: '#'
+      push:
+        - meta_scope: comment.line
+        - match: \n
+          pop: true
+  cudf:
+    - match: '\b(cudf)\s*(\[)(\w+)(,)\s*(.*)(\])\((.*)\)'
+      captures:
+        1: keyword.weld
+        2: punctuation.definition.generic.begin
+        3: variable.function.weld
+        4: punctuation.separator.key-value
+        5: support.type.weld
+        6: punctuation.definition.generic.end
+  keywords:
+    - match: \b(for|if|select|iterate|result|merge)\b
+      comment: keyword
+      scope: keyword.control.weld
+    - match: \b(macro|zip)\b
+      scope: keyword.weld
+    - match: \b(appender|merger|dictmerger|groupmerger|vecmerger)
+      scope: support.function
+  literals:
+    - match: \b(true|false)\b
+      comment: boolean literal
+      scope: constant.language.boolean.weld
+    - match: '\b(\d+(\.\d*)?[eE][+-]?\d+[g-zG-Z]?)\b'
+      comment: floating point decimal literal with exponent
+      scope: constant.numeric.decimal.float.weld
+    - match: '\b(\d+)(\.\d*[g-zG-Z]?\b|\.)'
+      comment: floating point decimal literal
+      scope: constant.numeric.decimal.float.weld
+    - match: '\b((0x|0X)\h+(\.\h*)?[pP][+-]?\d+[g-zG-Z]?)\b'
+      comment: floating point hexadecimal literal with exponent part
+      scope: constant.numeric.hexadecimal.float.weld
+    - match: '\b((0x|0X)\h+)(\.\h*[g-zG-Z]?\b|\.)'
+      comment: floating point hexadecimal literal
+      scope: constant.numeric.hexadecimal.float.weld
+    - match: '\b(\d+[cClLng-zG-Z]?|(si))\b'
+      comment: decimal integer literal
+      scope: constant.numeric.decimal.integer.weld
+  operators:
+    - match: '\b(let|and)[$&*+\-\/=>@^|<][!?$&*+\-\/=>@^|%:]*'
+      comment: binding operator
+      scope: keyword.weld
+    - match: '[$&*+\-\/=>@^%<][~!?$&*+\-\/=>@^|%<:.]*'
+      comment: infix symbol
+      scope: keyword.operator.weld
+    - match: '#[~!?$&*+\-\/=>@^|%<:.]+'
+      comment: infix symbol
+      scope: keyword.operator.weld
+    - match: '![~!?$&*+\-\/=>@^|%<:.]*'
+      comment: prefix symbol
+      scope: keyword.operator.weld
+    - match: '[?~][~!?$&*+\-\/=>@^|%<:.]+'
+      comment: prefix symbol
+      scope: keyword.operator.weld
+    - match: \b(exp|log|sqrt|sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|erf)\b
+      comment: named operator
+      scope: keyword.operator.weld
+    - match: ':'
+      comment: type annotation
+      scope: keyword.other.weld punctuation.other.colon punctuation.colon
+    - match: \.$
+      comment: field accessor
+      scope: keyword.other.weld punctuation.other.period punctuation.separator.period
+    - match: ;
+      comment: semicolon separator
+      scope: keyword.other.weld punctuation.separator.terminator punctuation.separator.semicolon
+    - match: ','
+      comment: comma separator
+      scope: keyword.other.weld punctuation.comma punctuation.separator.comma
+  strings:
+    - match: '"'
+      push:
+        - meta_scope: string.quoted.double.weld
+        - match: '"'
+          pop: true
+        - match: \\.
+          scope: constant.character.escape.weld
+  types:
+    - match: \b(bool|i8|u8|i16|u16|i32|u32|i64|u64|f32|f64|str)\b
+      comment: builtin type
+      scope: support.type.weld
+    - match: '\b(simd|vec|dict)\s*(\[)'
+      comment: builtin compound type
+      captures:
+        1: support.class.weld
+        2: punctuation.definition.generic.begin
+      push:
+        - match: '(\])'
+          captures:
+            1: punctuation.definition.generic.end
+          pop: true
+        - include: types
+        - match: ','
+          scope: keyword.other.weld punctuation.comma punctuation.separator.comma
